@@ -1,6 +1,7 @@
 package com.northcodes.recordshop.service;
 
 import com.northcodes.recordshop.model.Album;
+import com.northcodes.recordshop.model.Genre;
 import com.northcodes.recordshop.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,11 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<Album> getAlbumsByReleaseYear(int releaseYear) {
         return new ArrayList<>(albumRepository.findAlbumsByReleaseYear(releaseYear));
+    }
+
+    @Override
+    public List<Album> getAlbumsByGenre(Genre genre) {
+        return new ArrayList<>(albumRepository.findAlbumsByGenre(genre));
     }
 
 }

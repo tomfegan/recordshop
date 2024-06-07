@@ -1,6 +1,7 @@
 package com.northcodes.recordshop.controller;
 
 import com.northcodes.recordshop.model.Album;
+import com.northcodes.recordshop.model.Genre;
 import com.northcodes.recordshop.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,4 +42,8 @@ public class AlbumController {
         return new ResponseEntity<>(albumService.getAlbumsByReleaseYear(releaseYear), HttpStatus.OK);
     }
 
+    @GetMapping("/albumsByGenre/")
+    public ResponseEntity<List<Album>> getAlbumsByArtist(@RequestParam (value = "genre")/*, required = false)*/ Genre genre) {
+        return new ResponseEntity<>(albumService.getAlbumsByGenre(genre), HttpStatus.OK);
+    }
 }
