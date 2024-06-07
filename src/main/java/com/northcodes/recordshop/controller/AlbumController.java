@@ -31,10 +31,14 @@ public class AlbumController {
         return new ResponseEntity<>(albumService.getAlbumById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/album/")
-    public ResponseEntity<List<Album>>
-    getAlbumsByArtist(@RequestParam (value = "artist")/*, required = false)*/ String artist) {
+    @GetMapping("/albumsBy/")
+    public ResponseEntity<List<Album>> getAlbumsByArtist(@RequestParam (value = "artist")/*, required = false)*/ String artist) {
         return new ResponseEntity<>(albumService.getAlbumsByArtist(artist), HttpStatus.OK);
+    }
+
+    @GetMapping("/albumsByReleaseYear/")
+    public ResponseEntity<List<Album>> getAlbumsByReleaseYear(@RequestParam (value = "releaseyear")/*, required = false)*/ int releaseYear) {
+        return new ResponseEntity<>(albumService.getAlbumsByReleaseYear(releaseYear), HttpStatus.OK);
     }
 
 }

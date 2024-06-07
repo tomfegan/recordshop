@@ -40,4 +40,9 @@ public class AlbumServiceImpl implements AlbumService {
         return new ArrayList<>(albumRepository.findAlbumsByArtist(artist));
     }
 
+    @Override
+    public List<Album> getAlbumsByReleaseYear(int releaseYear) {
+        return new ArrayList<>(albumRepository.findAlbumsByReleaseYear(releaseYear));
+    }
+
 }

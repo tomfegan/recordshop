@@ -10,5 +10,7 @@ import java.util.List;
 public interface AlbumRepository extends CrudRepository<Album, Long> {
     boolean existsByAlbumName(String albumName);
     List<Album> findAlbumsByArtist(String artist);
+    List<Album> findAlbumsByReleaseYear(int releaseYear);
+
 
 }
