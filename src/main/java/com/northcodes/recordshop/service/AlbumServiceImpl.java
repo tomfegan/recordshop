@@ -23,9 +23,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public Album addAlbumItem(Album album) {
-
         if (albumRepository.existsByAlbumName(album.getAlbumName())) {
-
             album.setCopiesInStock(album.getCopiesInStock() + 1);
         }
         return albumRepository.save(album);
@@ -49,6 +47,11 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<Album> getAlbumsByGenre(Genre genre) {
         return new ArrayList<>(albumRepository.findAlbumsByGenre(genre));
+    }
+
+    @Override
+    public Album getAlbumInfoByName(String albumName) {
+        return albumRepository.getInfoByAlbumName(albumName);
     }
 
 }

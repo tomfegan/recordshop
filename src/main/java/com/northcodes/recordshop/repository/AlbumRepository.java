@@ -13,6 +13,7 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
     List<Album> findAlbumsByArtist(String artist);
     List<Album> findAlbumsByReleaseYear(int releaseYear);
     List<Album> findAlbumsByGenre(Genre genre);
+    Album getInfoByAlbumName(String albumName);
 
 
 }

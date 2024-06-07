@@ -46,4 +46,9 @@ public class AlbumController {
     public ResponseEntity<List<Album>> getAlbumsByArtist(@RequestParam (value = "genre")/*, required = false)*/ Genre genre) {
         return new ResponseEntity<>(albumService.getAlbumsByGenre(genre), HttpStatus.OK);
     }
+
+    @GetMapping("/albumInfo/")
+    public ResponseEntity<Album> getAlbumInfoByName(@RequestParam (value = "albumname")/*, required = false)*/ String albumName) {
+        return new ResponseEntity<>(albumService.getAlbumInfoByName(albumName), HttpStatus.OK);
+    }
 }
