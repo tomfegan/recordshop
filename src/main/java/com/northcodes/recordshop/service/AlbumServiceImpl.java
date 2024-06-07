@@ -35,4 +35,9 @@ public class AlbumServiceImpl implements AlbumService {
         return albumRepository.findById(id);
     }
 
+    @Override
+    public List<Album> getAlbumsByArtist(String artist) {
+        return new ArrayList<>(albumRepository.findAlbumsByArtist(artist));
+    }
+
 }

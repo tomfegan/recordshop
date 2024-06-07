@@ -31,4 +31,10 @@ public class AlbumController {
         return new ResponseEntity<>(albumService.getAlbumById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/album/")
+    public ResponseEntity<List<Album>>
+    getAlbumsByArtist(@RequestParam (value = "artist")/*, required = false)*/ String artist) {
+        return new ResponseEntity<>(albumService.getAlbumsByArtist(artist), HttpStatus.OK);
+    }
+
 }

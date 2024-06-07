@@ -10,4 +10,6 @@ public interface AlbumService {
     Album addAlbumItem(Album album);
     Optional<Album> getAlbumById(long id);
 
+    List<Album> getAlbumsByArtist(String artist);
+
 }
