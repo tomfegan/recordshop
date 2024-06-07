@@ -18,4 +18,9 @@ public class AlbumServiceImpl implements AlbumService {
         return albums;
     }
 
+    @Override
+    public Album addAlbumItem(Album album) {
+        return albumRepository.save(album);
+    }
+
 }
