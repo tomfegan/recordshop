@@ -5,4 +5,5 @@ public abstract class MusicRecord {
     private String albumName;
     private Genre genre;
     private int releaseYear;
+    private int copiesInStock;
 }

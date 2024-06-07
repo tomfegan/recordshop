@@ -27,4 +27,6 @@ public class Album extends MusicRecord {
     private Genre genre;
     @Column
     private int releaseYear;
+    @Column
+    private int copiesInStock;
 }
