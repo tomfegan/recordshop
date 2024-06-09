@@ -22,11 +22,16 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Album addAlbumItem(Album album) {
-        if (albumRepository.existsByAlbumName(album.getAlbumName())) {
+    public Album addAlbumItemToStock(Album album) {
+        if (!albumRepository.existsByAlbumName(album.getAlbumName())) {
             album.setCopiesInStock(album.getCopiesInStock() + 1);
+            return albumRepository.save(album);
+        } else { // https://www.baeldung.com/spring-data-crud-repository-save
+            Album albumInDB = albumRepository.findAlbumByAlbumName(album.getAlbumName());
+            albumInDB.setCopiesInStock(albumInDB.getCopiesInStock() + 1);
+            albumRepository.save(albumInDB);
+            return albumInDB;
         }
-        return albumRepository.save(album);
     }
 
     @Override
