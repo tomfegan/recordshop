@@ -18,8 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
-config
-/recordshop/src/main/resources/application-production.properties
+/resources/application-production.properties
 
 ### NetBeans ###
 /nbproject/private/
