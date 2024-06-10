@@ -14,6 +14,8 @@ public interface AlbumService {
     List<Album> getAlbumsByReleaseYear(int releaseYear);
     List<Album> getAlbumsByGenre(Genre genre);
     Album getAlbumInfoByName(String albumName);
+    String deleteAllAlbumStockById(long id);
+    Album reduceAlbumStockByAlbumName(String albumName);
 
 
 }

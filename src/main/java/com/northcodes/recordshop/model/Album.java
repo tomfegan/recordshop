@@ -22,6 +22,7 @@ public class Album extends MusicRecord {
     @Column
     private String albumName;
     @Column
+    @Enumerated(EnumType.STRING)
     private Genre genre;
     @Column
     private int releaseYear;

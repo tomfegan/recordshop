@@ -14,6 +14,7 @@ import java.util.Optional;
 public class AlbumServiceImpl implements AlbumService {
     @Autowired
     AlbumRepository albumRepository;
+
     @Override
     public List<Album> getCompleteListOfAlbums() {
         List<Album> albums = new ArrayList<>();
@@ -59,4 +60,29 @@ public class AlbumServiceImpl implements AlbumService {
         return albumRepository.getInfoByAlbumName(albumName);
     }
 
+    @Override
+    public String deleteAllAlbumStockById(long id) {
+        if (albumRepository.getAlbumById(id) != null) {
+            albumRepository.delete(albumRepository.getAlbumById(id));
+            return "All stock of the album at id " + id + " has been deleted";
+        } else {
+            return "There was no album at id " + id + " to delete from db";
+        }
+    }
+
+    @Override
+    public Album reduceAlbumStockByAlbumName(String albumName) {
+        if (!albumRepository.existsByAlbumName(albumName)) {
+            return null;
+        } else {
+            Album albumInDB = albumRepository.findAlbumByAlbumName(albumName);
+            if (albumInDB.getCopiesInStock() > 0) {
+                albumInDB.setCopiesInStock(albumInDB.getCopiesInStock() - 1);
+                albumRepository.save(albumInDB);
+                return albumInDB;
+            } else {
+                return albumInDB;
+            }
+        }
+    }
 }

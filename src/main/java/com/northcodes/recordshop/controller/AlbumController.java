@@ -23,38 +23,59 @@ public class AlbumController {
         Album addedAlbum = albumService.addAlbumItemToStock(postedAlbum);
         return new ResponseEntity<>(addedAlbum, HttpStatus.CREATED);
     }
+
     @GetMapping("/albums")
     public ResponseEntity<List<Album>> getAllAlbums() {
         return new ResponseEntity<>(albumService.getCompleteListOfAlbums(), HttpStatus.OK);
     }
+
     @GetMapping("/album/{id}")
     public ResponseEntity<Optional<Album>> getAlbumById(@PathVariable long id) {
         return new ResponseEntity<>(albumService.getAlbumById(id), HttpStatus.OK);
     }
 
     @GetMapping("/albumsBy/")
-    public ResponseEntity<List<Album>> getAlbumsByArtist(@RequestParam (value = "artist")/*, required = false)*/ String artist) {
+    public ResponseEntity<List<Album>> getAlbumsByArtist(@RequestParam(value = "artist")/*, required = false)*/ String artist) {
         return new ResponseEntity<>(albumService.getAlbumsByArtist(artist), HttpStatus.OK);
     }
 
     @GetMapping("/albumsByReleaseYear/")
-    public ResponseEntity<List<Album>> getAlbumsByReleaseYear(@RequestParam (value = "releaseyear")/*, required = false)*/ int releaseYear) {
+    public ResponseEntity<List<Album>> getAlbumsByReleaseYear(@RequestParam(value = "releaseyear")/*, required = false)*/ int releaseYear) {
         return new ResponseEntity<>(albumService.getAlbumsByReleaseYear(releaseYear), HttpStatus.OK);
     }
 
     @GetMapping("/albumsByGenre/")
-    public ResponseEntity<List<Album>> getAlbumsByArtist(@RequestParam (value = "genre")/*, required = false)*/ Genre genre) {
+    public ResponseEntity<List<Album>> getAlbumsByArtist(@RequestParam(value = "genre")/*, required = false)*/ Genre genre) {
         return new ResponseEntity<>(albumService.getAlbumsByGenre(genre), HttpStatus.OK);
     }
 
     @GetMapping("/albumInfo/")
-    public ResponseEntity<Album> getAlbumInfoByName(@RequestParam (value = "albumname")/*, required = false)*/ String albumName) {
+    public ResponseEntity<Album> getAlbumInfoByName(@RequestParam(value = "albumname")/*, required = false)*/ String albumName) {
 
         return new ResponseEntity<>(albumService.getAlbumInfoByName(albumName), HttpStatus.OK);
     }
 
-    //@DeleteMapping
-    // delete albums from the database
+    //    @DeleteMapping("/deleteAlbum/{id}")
+//    public ResponseEntity<Optional<Album>> deleteAlbumById(@PathVariable long id) {
+//        System.out.println("3");
+//        return new ResponseEntity<>(albumService.deleteAlbumById(id), HttpStatus.OK);
+//    }
+    @DeleteMapping("/deleteAlbum/{id}")
+    public ResponseEntity<String> deleteAllAlbumBStockById(@PathVariable long id) {
+        return new ResponseEntity<>(albumService.deleteAllAlbumStockById(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/reduceAlbumStock/{albumName}")
+    public ResponseEntity<Album> reduceStockByAlbumName(@PathVariable String albumName) {
+        Album album = albumService.reduceAlbumStockByAlbumName(albumName);
+        if (album == null) {
+            System.out.println("The album, " + albumName + " was not in stock");
+            return null;
+        } else {
+            return new ResponseEntity<>(album, HttpStatus.OK);
+        }
+//        return new ResponseEntity<>(albumService.deleteAllAlbumStockById(id), HttpStatus.OK);
+    }
 
 //    @PutMapping
 //    @PatchMapping
