@@ -19,7 +19,7 @@ target/
 *.iml
 *.ipr
 config
-/application-production.properties
+/recordshop/src/main/resources/application-production.properties
 
 ### NetBeans ###
 /nbproject/private/
