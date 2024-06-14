@@ -1,5 +1,6 @@
 package com.northcodes.recordshop.service;
 
+import com.northcodes.recordshop.exception.ApiRequestException;
 import com.northcodes.recordshop.model.Album;
 import com.northcodes.recordshop.model.Genre;
 import com.northcodes.recordshop.repository.AlbumRepository;
@@ -19,7 +20,11 @@ public class AlbumServiceImpl implements AlbumService {
     public List<Album> getCompleteListOfAlbums() {
         List<Album> albums = new ArrayList<>();
         albumRepository.findAll().forEach(albums::add);
-        return albums;
+        if (albums.size() > 0) {
+            return albums;
+        } else {
+            throw new ApiRequestException("No albums in stock");
+        }
     }
 
     @Override
@@ -37,22 +42,41 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public Optional<Album> getAlbumById(long id) {
-        return albumRepository.findById(id);
+        if (albumRepository.existsById(id)) {
+            return albumRepository.findById(id);
+        } else {
+            throw new ApiRequestException("No album with id " + id + " in stock");
+        }
     }
 
     @Override
     public List<Album> getAlbumsByArtist(String artist) {
-        return new ArrayList<>(albumRepository.findAlbumsByArtist(artist));
+        List<Album> list = new ArrayList<>(albumRepository.findAlbumsByArtist(artist));
+        if (!list.isEmpty()) {
+            return list;
+        } else {
+            throw new ApiRequestException("There are no albums by " + artist + " in stock");
+        }
     }
 
     @Override
     public List<Album> getAlbumsByReleaseYear(int releaseYear) {
-        return new ArrayList<>(albumRepository.findAlbumsByReleaseYear(releaseYear));
+        List<Album> list = new ArrayList<>(albumRepository.findAlbumsByReleaseYear(releaseYear));
+        if (!list.isEmpty()) {
+            return list;
+        } else {
+            throw new ApiRequestException("There are no albums in stock that were released in " + releaseYear);
+        }
     }
 
     @Override
     public List<Album> getAlbumsByGenre(Genre genre) {
-        return new ArrayList<>(albumRepository.findAlbumsByGenre(genre));
+        List<Album> list = new ArrayList<>(albumRepository.findAlbumsByGenre(genre));
+        if (!list.isEmpty()) {
+            return list;
+        } else {
+            throw new ApiRequestException("There are no albums in stock with the genre, " + genre);
+        }
     }
 
     @Override
@@ -66,14 +90,14 @@ public class AlbumServiceImpl implements AlbumService {
             albumRepository.delete(albumRepository.getAlbumById(id));
             return "All stock of the album at id " + id + " has been deleted";
         } else {
-            return "There was no album at id " + id + " to delete from db";
+            throw new ApiRequestException("There was no album at id " + id + " to delete from db");
         }
     }
 
     @Override
     public Album reduceAlbumStockByAlbumName(String albumName) {
         if (!albumRepository.existsByAlbumName(albumName)) {
-            return null;
+            throw new ApiRequestException("There were no albums in stock with the name " + albumName);
         } else {
             Album albumInDB = albumRepository.findAlbumByAlbumName(albumName);
             if (albumInDB.getCopiesInStock() > 0) {
@@ -85,4 +109,26 @@ public class AlbumServiceImpl implements AlbumService {
             }
         }
     }
+
+
+    @Override
+    public Album updateAlbum(Album albumToUpdate, Long id) {
+        Optional<Album> album = albumRepository.findById(id); // this is the data in the database if there is an album with id 1
+        Album updatedItem;
+
+        if(album.isPresent()) {
+            updatedItem = album.get();
+            updatedItem.setAlbumName(albumToUpdate.getAlbumName());
+            updatedItem.setArtist(albumToUpdate.getArtist());
+            updatedItem.setGenre(albumToUpdate.getGenre());
+            updatedItem.setCopiesInStock(album.get().getCopiesInStock());
+            updatedItem = albumRepository.save(updatedItem);
+            return updatedItem;
+        } else {
+            throw new ApiRequestException(String.format("Album with id %s cannot be found", id));
+        }
+
+    }
+
+
 }

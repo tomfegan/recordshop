@@ -17,5 +17,8 @@ public interface AlbumService {
     String deleteAllAlbumStockById(long id);
     Album reduceAlbumStockByAlbumName(String albumName);
 
+    Album updateAlbum(Album albumToUpdate, Long id);
+
+
 
 }
