@@ -19,6 +19,7 @@ target/
 *.iml
 *.ipr
 src/main/resources/application-production.properties
+src/main/resources/application-rds.properties
 
 ### NetBeans ###
 /nbproject/private/

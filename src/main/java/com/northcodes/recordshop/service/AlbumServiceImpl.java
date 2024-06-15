@@ -15,7 +15,6 @@ import java.util.Optional;
 public class AlbumServiceImpl implements AlbumService {
     @Autowired
     AlbumRepository albumRepository;
-
     @Override
     public List<Album> getCompleteListOfAlbums() {
         List<Album> albums = new ArrayList<>();
@@ -26,7 +25,6 @@ public class AlbumServiceImpl implements AlbumService {
             throw new ApiRequestException("No albums in stock");
         }
     }
-
     @Override
     public Album addAlbumItemToStock(Album album) {
         if (!albumRepository.existsByAlbumName(album.getAlbumName())) {
@@ -39,7 +37,6 @@ public class AlbumServiceImpl implements AlbumService {
             return albumInDB;
         }
     }
-
     @Override
     public Optional<Album> getAlbumById(long id) {
         if (albumRepository.existsById(id)) {
@@ -48,7 +45,6 @@ public class AlbumServiceImpl implements AlbumService {
             throw new ApiRequestException("No album with id " + id + " in stock");
         }
     }
-
     @Override
     public List<Album> getAlbumsByArtist(String artist) {
         List<Album> list = new ArrayList<>(albumRepository.findAlbumsByArtist(artist));
@@ -58,7 +54,6 @@ public class AlbumServiceImpl implements AlbumService {
             throw new ApiRequestException("There are no albums by " + artist + " in stock");
         }
     }
-
     @Override
     public List<Album> getAlbumsByReleaseYear(int releaseYear) {
         List<Album> list = new ArrayList<>(albumRepository.findAlbumsByReleaseYear(releaseYear));
@@ -68,7 +63,6 @@ public class AlbumServiceImpl implements AlbumService {
             throw new ApiRequestException("There are no albums in stock that were released in " + releaseYear);
         }
     }
-
     @Override
     public List<Album> getAlbumsByGenre(Genre genre) {
         List<Album> list = new ArrayList<>(albumRepository.findAlbumsByGenre(genre));
@@ -78,10 +72,13 @@ public class AlbumServiceImpl implements AlbumService {
             throw new ApiRequestException("There are no albums in stock with the genre, " + genre);
         }
     }
-
     @Override
     public Album getAlbumInfoByName(String albumName) {
-        return albumRepository.getInfoByAlbumName(albumName);
+        if (albumRepository.getInfoByAlbumName(albumName) != null) {
+            return albumRepository.getInfoByAlbumName(albumName);
+        } else {
+            throw new ApiRequestException("There was no album called " + albumName + " to delete from db");
+        }
     }
 
     @Override
@@ -93,7 +90,6 @@ public class AlbumServiceImpl implements AlbumService {
             throw new ApiRequestException("There was no album at id " + id + " to delete from db");
         }
     }
-
     @Override
     public Album reduceAlbumStockByAlbumName(String albumName) {
         if (!albumRepository.existsByAlbumName(albumName)) {
@@ -105,30 +101,25 @@ public class AlbumServiceImpl implements AlbumService {
                 albumRepository.save(albumInDB);
                 return albumInDB;
             } else {
-                return albumInDB;
+                throw new ApiRequestException("There were no albums in stock with the name " + albumName + " to delete");
             }
         }
     }
-
-
     @Override
     public Album updateAlbum(Album albumToUpdate, Long id) {
-        Optional<Album> album = albumRepository.findById(id); // this is the data in the database if there is an album with id 1
+        Optional<Album> albumInDb = albumRepository.findById(id); // this is the data in the database if there is an albumInDb with id 1
         Album updatedItem;
-
-        if(album.isPresent()) {
-            updatedItem = album.get();
+        if(albumInDb.isPresent()) {
+            updatedItem = albumInDb.get();
             updatedItem.setAlbumName(albumToUpdate.getAlbumName());
             updatedItem.setArtist(albumToUpdate.getArtist());
             updatedItem.setGenre(albumToUpdate.getGenre());
-            updatedItem.setCopiesInStock(album.get().getCopiesInStock());
+            updatedItem.setCopiesInStock(albumInDb.get().getCopiesInStock());
             updatedItem = albumRepository.save(updatedItem);
             return updatedItem;
         } else {
-            throw new ApiRequestException(String.format("Album with id %s cannot be found", id));
+            throw new ApiRequestException("Album with id " + id + " cannot be found");
         }
-
     }
-
 
 }
